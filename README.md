@@ -18,7 +18,7 @@ import "github.com/goravel/s3"
 
 "providers": []foundation.ServiceProvider{
     ...
-    &sms.ServiceProvider{},
+    &s3.ServiceProvider{},
 }
 ```
 
