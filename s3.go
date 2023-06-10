@@ -2,6 +2,7 @@ package s3
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"strings"
@@ -40,6 +41,9 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	region := config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
+	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
+		return nil, errors.New("please set s3 configuration first")
+	}
 
 	client := s3.New(s3.Options{
 		Region:      region,
