@@ -1,13 +1,12 @@
 package s3
 
 import (
-	"math/rand"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/goravel/framework/contracts/filesystem"
 	"github.com/goravel/framework/support/file"
-	supporttime "github.com/goravel/framework/support/time"
 )
 
 func fullPathOfFile(filePath string, source filesystem.File, name string) (string, error) {
@@ -19,31 +18,19 @@ func fullPathOfFile(filePath string, source filesystem.File, name string) (strin
 			return "", err
 		}
 
-		return strings.TrimSuffix(filePath, "/") + "/" + strings.TrimSuffix(strings.TrimPrefix(path.Base(name), "/"), "/") + "." + extension, nil
+		return filepath.Join(filePath, strings.TrimSuffix(strings.TrimPrefix(path.Base(name), string(filepath.Separator)), string(filepath.Separator))+"."+extension), nil
 	} else {
-		return strings.TrimSuffix(filePath, "/") + "/" + strings.TrimPrefix(path.Base(name), "/"), nil
+		return filepath.Join(filePath, strings.TrimPrefix(path.Base(name), string(filepath.Separator))), nil
 	}
 }
 
 func validPath(path string) string {
-	realPath := strings.TrimPrefix(path, "./")
-	realPath = strings.TrimPrefix(realPath, "/")
+	realPath := strings.TrimPrefix(path, "."+string(filepath.Separator))
+	realPath = strings.TrimPrefix(realPath, string(filepath.Separator))
 	realPath = strings.TrimPrefix(realPath, ".")
-	if realPath != "" && !strings.HasSuffix(realPath, "/") {
-		realPath += "/"
+	if realPath != "" && !strings.HasSuffix(realPath, string(filepath.Separator)) {
+		realPath += string(filepath.Separator)
 	}
 
 	return realPath
-}
-
-func random(length int) string {
-	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	bytes := []byte(str)
-	var result []byte
-	rand.Seed(supporttime.Now().UnixNano() + int64(rand.Intn(100)))
-	for i := 0; i < length; i++ {
-		result = append(result, bytes[rand.Intn(len(bytes))])
-	}
-
-	return string(result)
 }

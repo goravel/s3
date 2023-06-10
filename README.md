@@ -1,4 +1,4 @@
-# s3
+# S3
 
 A s3 disk driver for facades.Storage of Goravel.
 
@@ -18,19 +18,34 @@ import "github.com/goravel/s3"
 
 "providers": []foundation.ServiceProvider{
     ...
-    &sms.ServiceProvider{},
+    &s3.ServiceProvider{},
 }
 ```
 
-2. Publish configuration file
+3. Add s3 disk to `config/filesystems.go` file
 
 ```
-go run . artisan vendor:publish --package=github.com/goravel/s3
+// config/filesystems.go
+import (
+    "github.com/goravel/framework/contracts/filesystem"
+    s3facades "github.com/goravel/s3/facades"
+)
+
+"disks": map[string]any{
+    ...
+    "s3": map[string]any{
+        "driver": "custom",
+        "key":    config.Env("AWS_ACCESS_KEY_ID"),
+        "secret": config.Env("AWS_ACCESS_KEY_SECRET"),
+        "region": config.Env("AWS_REGION"),
+        "bucket": config.Env("AWS_BUCKET"),
+        "url":    config.Env("AWS_URL"),
+        "via": func() (filesystem.Driver, error) {
+            return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
+        },
+    },
+}
 ```
-
-3. Fill your s3 configuration to `config/s3.go` file
-
-4. Add s3 disk to `config/filesystems.go` file
 
 ## Testing
 

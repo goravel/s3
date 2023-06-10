@@ -2,6 +2,7 @@ package s3
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"strings"
 	"time"
@@ -12,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gookit/color"
+	"github.com/goravel/framework/support/str"
 
 	"github.com/goravel/framework/contracts/config"
 	"github.com/goravel/framework/contracts/filesystem"
@@ -26,18 +28,18 @@ import (
 type S3 struct {
 	ctx      context.Context
 	config   config.Config
+	disk     string
 	instance *s3.Client
 	bucket   string
-	disk     string
 	url      string
 }
 
-func NewS3(ctx context.Context, config config.Config) (*S3, error) {
-	accessKeyId := config.GetString("s3.key")
-	accessKeySecret := config.GetString("s3.secret")
-	region := config.GetString("s3.region")
-	bucket := config.GetString("s3.bucket")
-	url := config.GetString("s3.url")
+func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) {
+	accessKeyId := config.GetString(fmt.Sprintf("filesystems.disks.%s.key", disk))
+	accessKeySecret := config.GetString(fmt.Sprintf("filesystems.disks.%s.secret", disk))
+	region := config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
+	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
+	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 
 	client := s3.New(s3.Options{
 		Region:      region,
@@ -47,6 +49,7 @@ func NewS3(ctx context.Context, config config.Config) (*S3, error) {
 	return &S3{
 		ctx:      ctx,
 		config:   config,
+		disk:     disk,
 		instance: client,
 		bucket:   bucket,
 		url:      url,
@@ -305,7 +308,7 @@ func (r *S3) Put(file string, content string) error {
 }
 
 func (r *S3) PutFile(filePath string, source filesystem.File) (string, error) {
-	return r.PutFileAs(filePath, source, random(40))
+	return r.PutFileAs(filePath, source, str.Random(40))
 }
 
 func (r *S3) PutFileAs(filePath string, source filesystem.File, name string) (string, error) {
@@ -356,9 +359,9 @@ func (r *S3) TemporaryUrl(file string, t time.Time) (string, error) {
 }
 
 func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
-	driver, err := NewS3(ctx, r.config)
+	driver, err := NewS3(ctx, r.config, r.disk)
 	if err != nil {
-		color.Redf("[filesystem] init %s disk fail: %+v\n", r.disk, err)
+		color.Redf("[S3] init disk error: %+v\n", err)
 
 		return nil
 	}

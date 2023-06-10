@@ -23,7 +23,14 @@ func TestStorage(t *testing.T) {
 	}
 
 	assert.Nil(t, ioutil.WriteFile("test.txt", []byte("Goravel"), 0644))
-	mockConfig := initConfig()
+
+	mockConfig := &configmocks.Config{}
+	mockConfig.On("GetString", "app.timezone").Return("UTC")
+	mockConfig.On("GetString", "filesystems.disks.s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
+	mockConfig.On("GetString", "filesystems.disks.s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
+	mockConfig.On("GetString", "filesystems.disks.s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
+	mockConfig.On("GetString", "filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
+	mockConfig.On("GetString", "filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
 
 	var driver contractsfilesystem.Driver
 	url := os.Getenv("AWS_URL")
@@ -363,7 +370,7 @@ func TestStorage(t *testing.T) {
 	}
 
 	var err error
-	driver, err = NewS3(context.Background(), mockConfig)
+	driver, err = NewS3(context.Background(), mockConfig, "s3")
 	assert.NotNil(t, driver)
 	assert.Nil(t, err)
 	for _, test := range tests {
@@ -373,18 +380,6 @@ func TestStorage(t *testing.T) {
 	}
 
 	assert.Nil(t, os.Remove("test.txt"))
-}
-
-func initConfig() *configmocks.Config {
-	mockConfig := &configmocks.Config{}
-	mockConfig.On("GetString", "app.timezone").Return("UTC")
-	mockConfig.On("GetString", "s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
-	mockConfig.On("GetString", "s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
-	mockConfig.On("GetString", "s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
-	mockConfig.On("GetString", "s3.bucket").Return(os.Getenv("AWS_BUCKET"))
-	mockConfig.On("GetString", "s3.url").Return(os.Getenv("AWS_URL"))
-
-	return mockConfig
 }
 
 type File struct {

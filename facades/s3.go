@@ -8,8 +8,8 @@ import (
 	"github.com/goravel/s3"
 )
 
-func S3() filesystem.Driver {
-	instance, err := s3.App.Make(s3.Binding)
+func S3(disk string) filesystem.Driver {
+	instance, err := s3.App.MakeWith(s3.Binding, map[string]any{"disk": disk})
 	if err != nil {
 		log.Fatalln(err)
 		return nil
