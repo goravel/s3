@@ -3,7 +3,8 @@ package s3
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"os"
 	"strings"
 	"time"
 
@@ -233,7 +234,7 @@ func (r *S3) Get(file string) (string, error) {
 		return "", err
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -320,7 +321,7 @@ func (r *S3) PutFileAs(filePath string, source filesystem.File, name string) (st
 		return "", err
 	}
 
-	data, err := ioutil.ReadFile(source.File())
+	data, err := os.ReadFile(source.File())
 	if err != nil {
 		return "", err
 	}
@@ -351,7 +352,7 @@ func (r *S3) TemporaryUrl(file string, t time.Time) (string, error) {
 		Key:    aws.String(file),
 	}
 	presignDuration := func(po *s3.PresignOptions) {
-		po.Expires = t.Sub(time.Now())
+		po.Expires = time.Until(t)
 	}
 	presignResult, err := presignClient.PresignGetObject(r.ctx, presignParams, presignDuration)
 	if err != nil {

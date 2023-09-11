@@ -1,12 +1,13 @@
 # S3
 
-A s3 disk driver for facades.Storage of Goravel.
+A s3 disk driver for `facades.Storage()` of Goravel.
 
 ## Version
 
 | goravel/s3  | goravel/framework    |
 | ----------  | --------------       |
-| v1.0.0      | v1.12.0              |
+| v1.1.*      | v1.13.*              |
+| v1.0.*      | v1.12.*              |
 
 ## Install
 
