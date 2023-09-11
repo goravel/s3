@@ -1,6 +1,6 @@
 # S3
 
-A s3 disk driver for facades.Storage of Goravel.
+A s3 disk driver for `facades.Storage()` of Goravel.
 
 ## Version
 
