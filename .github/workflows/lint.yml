@@ -1,0 +1,25 @@
+name: Lint
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+          cache: false
+      - name: Lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          skip-cache: true
+          skip-pkg-cache: true
+          skip-build-cache: true
+          version: latest
+          args: --timeout=30m ./...
