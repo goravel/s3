@@ -226,23 +226,29 @@ func (r *S3) Files(path string) ([]string, error) {
 }
 
 func (r *S3) Get(file string) (string, error) {
+	data, err := r.GetBytes(file)
+
+	return string(data), err
+}
+
+func (r *S3) GetBytes(file string) ([]byte, error) {
 	resp, err := r.instance.GetObject(r.ctx, &s3.GetObjectInput{
 		Bucket: aws.String(r.bucket),
 		Key:    aws.String(file),
 	})
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	if err := resp.Body.Close(); err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(data), nil
+	return data, nil
 }
 
 func (r *S3) LastModified(file string) (time.Time, error) {
