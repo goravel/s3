@@ -1,8 +1,8 @@
 package s3
 
 import (
+	"fmt"
 	"path"
-	"path/filepath"
 	"strings"
 
 	"github.com/goravel/framework/contracts/filesystem"
@@ -18,18 +18,18 @@ func fullPathOfFile(filePath string, source filesystem.File, name string) (strin
 			return "", err
 		}
 
-		return filepath.Join(filePath, strings.TrimSuffix(strings.TrimPrefix(path.Base(name), string(filepath.Separator)), string(filepath.Separator))+"."+extension), nil
+		return fmt.Sprintf("%s/%s.%s", filePath, strings.TrimSuffix(strings.TrimPrefix(path.Base(name), "/"), "/"), extension), nil
 	} else {
-		return filepath.Join(filePath, strings.TrimPrefix(path.Base(name), string(filepath.Separator))), nil
+		return fmt.Sprintf("%s/%s", filePath, strings.TrimPrefix(path.Base(name), "/")), nil
 	}
 }
 
 func validPath(path string) string {
-	realPath := strings.TrimPrefix(path, "."+string(filepath.Separator))
-	realPath = strings.TrimPrefix(realPath, string(filepath.Separator))
+	realPath := strings.TrimPrefix(path, "./")
+	realPath = strings.TrimPrefix(realPath, "/")
 	realPath = strings.TrimPrefix(realPath, ".")
-	if realPath != "" && !strings.HasSuffix(realPath, string(filepath.Separator)) {
-		realPath += string(filepath.Separator)
+	if realPath != "" && !strings.HasSuffix(realPath, "/") {
+		realPath += "/"
 	}
 
 	return realPath
