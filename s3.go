@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -130,7 +131,7 @@ func (r *S3) Delete(files ...string) error {
 		Bucket: aws.String(r.bucket),
 		Delete: &types.Delete{
 			Objects: objectIdentifiers,
-			Quiet:   true,
+			Quiet:   aws.Bool(true),
 		},
 	})
 
@@ -164,7 +165,7 @@ func (r *S3) DeleteDirectory(directory string) error {
 			}
 		}
 
-		if listObjectsV2Response.IsTruncated {
+		if *listObjectsV2Response.IsTruncated {
 			listObjectsV2Response, err = r.instance.ListObjectsV2(r.ctx, &s3.ListObjectsV2Input{
 				Bucket:            aws.String(r.bucket),
 				ContinuationToken: listObjectsV2Response.ContinuationToken,
@@ -219,7 +220,12 @@ func (r *S3) Files(path string) ([]string, error) {
 		return nil, err
 	}
 	for _, object := range listObjsResponse.Contents {
-		files = append(files, strings.ReplaceAll(*object.Key, validPath, ""))
+		file := strings.ReplaceAll(*object.Key, validPath, "")
+		if file == "" {
+			continue
+		}
+
+		files = append(files, file)
 	}
 
 	return files, nil
@@ -305,12 +311,18 @@ func (r *S3) Path(file string) string {
 }
 
 func (r *S3) Put(file string, content string) error {
+	if ext := filepath.Ext(file); ext != "" {
+		if err := r.MakeDirectory(filepath.Dir(file)); err != nil {
+			return err
+		}
+	}
+
 	mtype := mimetype.Detect([]byte(content))
 	_, err := r.instance.PutObject(r.ctx, &s3.PutObjectInput{
 		Bucket:        aws.String(r.bucket),
 		Key:           aws.String(file),
 		Body:          strings.NewReader(content),
-		ContentLength: int64(len(content)),
+		ContentLength: aws.Int64(int64(len(content))),
 		ContentType:   aws.String(mtype.String()),
 	})
 
@@ -348,7 +360,7 @@ func (r *S3) Size(file string) (int64, error) {
 		return 0, err
 	}
 
-	return resp.ContentLength, nil
+	return *resp.ContentLength, nil
 }
 
 func (r *S3) TemporaryUrl(file string, t time.Time) (string, error) {
