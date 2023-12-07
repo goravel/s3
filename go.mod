@@ -4,8 +4,8 @@ go 1.20
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.23.5
-	github.com/aws/aws-sdk-go-v2/credentials v1.16.9
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.47.2
+	github.com/aws/aws-sdk-go-v2/credentials v1.16.10
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.47.3
 	github.com/gabriel-vasile/mimetype v1.4.3
 	github.com/gookit/color v1.5.4
 	github.com/goravel/framework v1.13.2
