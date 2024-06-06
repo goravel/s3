@@ -25,8 +25,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.10 h1:7kZqP7ak
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.10/go.mod h1:gYVF3nM1ApfTRDj9pvdhootBb8WbiIejuqn4w8ruMes=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.8 h1:iQNXVs1vtaq+y9M90M4ZIVNORje0qXTscqHLqoOnFS0=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.8/go.mod h1:yUQPRlWqGG0lfNsmjbRWKVwgilfBtZTOFSLEYALlAig=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.54.4 h1:4p9SCdZBO0PdEXLTF2fcQuxOEkEiqPQpK824cP2VKRo=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.54.4/go.mod h1:oSkRFuHVWmUY4Ssk16ErGzBqvYEbvORJFzFXzWhTB2s=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.55.0 h1:6kq0Xql9qiwNGL/Go87ZqR4otg9jnKs71OfWCVbPxLM=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.55.0/go.mod h1:oSkRFuHVWmUY4Ssk16ErGzBqvYEbvORJFzFXzWhTB2s=
 github.com/aws/smithy-go v1.20.2 h1:tbp628ireGtzcHDDmLT/6ADHidqnwgF57XOXZe6tp4Q=
 github.com/aws/smithy-go v1.20.2/go.mod h1:krry+ya/rV9RDcV/Q16kpu6ypI4K2czasz0NC3qS14E=
 github.com/cenkalti/backoff/v4 v4.2.0 h1:HN5dHm3WBOgndBH6E8V0q2jIYIR3s9yglV8k/+MN3u4=
