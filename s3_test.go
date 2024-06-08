@@ -12,8 +12,8 @@ import (
 	"github.com/gookit/color"
 	"github.com/stretchr/testify/assert"
 
-	configmocks "github.com/goravel/framework/contracts/config/mocks"
-	contractsfilesystem "github.com/goravel/framework/contracts/filesystem"
+	filesystemcontract "github.com/goravel/framework/contracts/filesystem"
+	configmock "github.com/goravel/framework/mocks/config"
 )
 
 func TestStorage(t *testing.T) {
@@ -24,7 +24,7 @@ func TestStorage(t *testing.T) {
 
 	assert.Nil(t, os.WriteFile("test.txt", []byte("Goravel"), 0644))
 
-	mockConfig := &configmocks.Config{}
+	mockConfig := &configmock.Config{}
 	mockConfig.On("GetString", "app.timezone").Return("UTC")
 	mockConfig.On("GetString", "filesystems.disks.s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
 	mockConfig.On("GetString", "filesystems.disks.s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
@@ -32,7 +32,7 @@ func TestStorage(t *testing.T) {
 	mockConfig.On("GetString", "filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
 	mockConfig.On("GetString", "filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
 
-	var driver contractsfilesystem.Driver
+	var driver filesystemcontract.Driver
 	url := os.Getenv("AWS_URL")
 
 	tests := []struct {
@@ -404,7 +404,7 @@ type File struct {
 	path string
 }
 
-func (f *File) Disk(disk string) contractsfilesystem.File {
+func (f *File) Disk(disk string) filesystemcontract.File {
 	return &File{}
 }
 
