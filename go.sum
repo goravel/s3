@@ -2,8 +2,8 @@ github.com/aws/aws-sdk-go-v2 v1.30.0 h1:6qAwtzlfcTtcL8NHtbDQAqgM5s6NDipQTkPxyH/6
 github.com/aws/aws-sdk-go-v2 v1.30.0/go.mod h1:ffIFB97e2yNsv4aTSGkqtHnppsIJzw7G7BReUZ3jCXM=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.2 h1:x6xsQXGSmW6frevwDA+vi/wqhp1ct18mVXYN08/93to=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.2/go.mod h1:lPprDr1e6cJdyYeGXnRaJoP4Md+cDBvi2eOj00BlGmg=
-github.com/aws/aws-sdk-go-v2/credentials v1.17.21 h1:pjAqgzfgFhTv5grc7xPHtXCAaMapzmwA7aU+c/SZQGw=
-github.com/aws/aws-sdk-go-v2/credentials v1.17.21/go.mod h1:nhK6PtBlfHTUDVmBLr1dg+WHCOCK+1Fu/WQyVHPsgNQ=
+github.com/aws/aws-sdk-go-v2/credentials v1.17.22 h1:wu9kXQbbt64ul09v3ye4HYleAr4WiGV/uv69EXKDEr0=
+github.com/aws/aws-sdk-go-v2/credentials v1.17.22/go.mod h1:pcvMtPcxJn3r2k6mZD9I0EcumLqPLA7V/0iCgOIlY+o=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.12 h1:SJ04WXGTwnHlWIODtC5kJzKbeuHt+OUNOgKg7nfnUGw=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.12/go.mod h1:FkpvXhA92gb3GE9LD6Og0pHHycTxW7xGpnEh5E7Opwo=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.12 h1:hb5KgeYfObi5MHkSSZMEudnIvX30iB+E21evI4r6BnQ=
@@ -18,8 +18,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.14 h1:zSDPny/p
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.14/go.mod h1:3TTcI5JSzda1nw/pkVC9dhgLre0SNBFj2lYS4GctXKI=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.12 h1:tzha+v1SCEBpXWEuw6B/+jm4h5z8hZbTpXz0zRZqTnw=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.12/go.mod h1:n+nt2qjHGoseWeLHt1vEr6ZRCCxIN2KcNpJxBcYQSwI=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.56.1 h1:wsg9Z/vNnCmxWikfGIoOlnExtEU459cR+2d+iDJ8elo=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.56.1/go.mod h1:8rDw3mVwmvIWWX/+LWY3PPIMZuwnQdJMCt0iVFVT3qw=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.57.0 h1:v2DWNY6ll3JK62Bx1khUu9fJ4f3TwXllIEJxI7dDv/o=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.57.0/go.mod h1:8rDw3mVwmvIWWX/+LWY3PPIMZuwnQdJMCt0iVFVT3qw=
 github.com/aws/smithy-go v1.20.2 h1:tbp628ireGtzcHDDmLT/6ADHidqnwgF57XOXZe6tp4Q=
 github.com/aws/smithy-go v1.20.2/go.mod h1:krry+ya/rV9RDcV/Q16kpu6ypI4K2czasz0NC3qS14E=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
