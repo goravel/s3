@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.58.2
 	github.com/gabriel-vasile/mimetype v1.4.4
 	github.com/gookit/color v1.5.4
-	github.com/goravel/framework v1.14.3
+	github.com/goravel/framework v1.14.4
 	github.com/stretchr/testify v1.9.0
 )
 
