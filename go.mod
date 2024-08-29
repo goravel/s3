@@ -4,8 +4,8 @@ go 1.21
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.30.4
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.29
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.60.1
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.30
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.61.0
 	github.com/gabriel-vasile/mimetype v1.4.5
 	github.com/gookit/color v1.5.4
 	github.com/goravel/framework v1.14.4
