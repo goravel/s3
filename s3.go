@@ -207,7 +207,7 @@ func (r *S3) Exists(file string) bool {
 	})
 
 	if err != nil {
-		log.Println(err)
+		log.Println("Error while checking file existance:", err)
 		return false
 	}
 
