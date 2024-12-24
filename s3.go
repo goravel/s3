@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -204,6 +205,11 @@ func (r *S3) Exists(file string) bool {
 		Bucket: aws.String(r.bucket),
 		Key:    aws.String(file),
 	})
+
+	if err != nil {
+		log.Println(err)
+		return false
+	}
 
 	return err == nil
 }
