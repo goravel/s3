@@ -201,13 +201,15 @@ func (r *S3) Directories(path string) ([]string, error) {
 }
 
 func (r *S3) Exists(file string) bool {
-	_, err := r.instance.HeadObject(r.ctx, &s3.HeadObjectInput{
+	o, err := r.instance.HeadObject(r.ctx, &s3.HeadObjectInput{
 		Bucket: aws.String(r.bucket),
 		Key:    aws.String(file),
 	})
 
+	log.Printf("output %v:", o)
+
 	if err != nil {
-		log.Println("Error while checking file existance:", err)
+		log.Println("error while checking file existance:", err)
 		return false
 	}
 
