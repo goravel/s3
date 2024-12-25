@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -42,13 +43,14 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	region := config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
+	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
 	}
 
 	client := s3.New(s3.Options{
 		Region:      region,
-		Credentials: aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, "")),
+		Credentials: aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, token)),
 	})
 
 	return &S3{
@@ -204,6 +206,11 @@ func (r *S3) Exists(file string) bool {
 		Bucket: aws.String(r.bucket),
 		Key:    aws.String(file),
 	})
+
+	if err != nil {
+		log.Println("error while checking file existance:", err)
+		return false
+	}
 
 	return err == nil
 }
