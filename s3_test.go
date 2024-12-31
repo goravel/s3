@@ -12,8 +12,8 @@ import (
 	"github.com/gookit/color"
 	"github.com/stretchr/testify/assert"
 
-	filesystemcontract "github.com/goravel/framework/contracts/filesystem"
-	configmock "github.com/goravel/framework/mocks/config"
+	contractsfilesystem "github.com/goravel/framework/contracts/filesystem"
+	mocksconfig "github.com/goravel/framework/mocks/config"
 )
 
 func TestStorage(t *testing.T) {
@@ -24,15 +24,16 @@ func TestStorage(t *testing.T) {
 
 	assert.Nil(t, os.WriteFile("test.txt", []byte("Goravel"), 0644))
 
-	mockConfig := &configmock.Config{}
-	mockConfig.On("GetString", "app.timezone").Return("UTC")
-	mockConfig.On("GetString", "filesystems.disks.s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
-	mockConfig.On("GetString", "filesystems.disks.s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
-	mockConfig.On("GetString", "filesystems.disks.s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
-	mockConfig.On("GetString", "filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
-	mockConfig.On("GetString", "filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
+	mockConfig := &mocksconfig.Config{}
+	mockConfig.EXPECT().GetString("app.timezone").Return("UTC")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.token", "").Return("")
 
-	var driver filesystemcontract.Driver
+	var driver contractsfilesystem.Driver
 	url := os.Getenv("AWS_URL")
 
 	tests := []struct {
@@ -404,7 +405,7 @@ type File struct {
 	path string
 }
 
-func (f *File) Disk(disk string) filesystemcontract.File {
+func (f *File) Disk(disk string) contractsfilesystem.File {
 	return &File{}
 }
 

@@ -4,7 +4,21 @@ on:
     branches:
       - master
   pull_request:
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_ACCESS_KEY_SECRET: ${{ secrets.AWS_ACCESS_KEY_SECRET }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+  AWS_URL: ${{ secrets.AWS_URL }}
 jobs:
-  test:
-    uses: goravel/.github/.github/workflows/test.yml@master
-    secrets: inherit
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - name: Install dependencies
+        run: go mod tidy
+      - name: Run tests
+        run: go test -timeout 1h ./...
