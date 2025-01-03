@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -318,9 +317,15 @@ func (r *S3) Path(file string) string {
 }
 
 func (r *S3) Put(file string, content string) error {
-	if ext := filepath.Ext(file); ext != "" {
-		if err := r.MakeDirectory(filepath.Dir(file)); err != nil {
-			return err
+	// If the file is created in a folder directly, we can't check if the folder exists.
+	// So we need to create the folders first.
+	if !strings.HasSuffix(file, "/") {
+		folders := strings.Split(file, "/")
+		for i := 1; i < len(folders); i++ {
+			folder := strings.Join(folders[:i], "/")
+			if err := r.MakeDirectory(folder); err != nil {
+				return err
+			}
 		}
 	}
 
