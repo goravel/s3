@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gookit/color"
+	"github.com/goravel/framework/http"
 	"github.com/goravel/framework/support/str"
 
 	"github.com/goravel/framework/contracts/config"
@@ -393,6 +394,10 @@ func (r *S3) TemporaryUrl(file string, t time.Time) (string, error) {
 }
 
 func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
+	if httpCtx, ok := ctx.(http.Context); ok {
+		ctx = httpCtx.Context()
+	}
+
 	driver, err := NewS3(ctx, r.config, r.disk)
 	if err != nil {
 		color.Redf("[S3] init disk error: %+v\n", err)
