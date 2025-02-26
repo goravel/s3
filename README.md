@@ -73,11 +73,12 @@ s3facades "github.com/goravel/s3/facades"
         "driver": "custom",
         "key": config.Env("S3_ACCESS_KEY_ID"),
         "secret": config.Env("S3_ACCESS_KEY_SECRET"),
-        "region": config.Env("S3_REGION"),
+        "region": config.Env("S3_REGION", "us-east-1"),
         "bucket": config.Env("S3_BUCKET"),
-        "url": config.Env("S3_URL"),
+        "url": config.Env("S3_URL", "https://{S3_BUCKET}.sfo3.digitaloceanspaces.com"),
         "endpoint": config.Env("S3_ENDPOINT", "https://sfo3.digitaloceanspaces.com"),
         "use_path_style": config.Env("S3_USE_PATH_STYLE", true),
+        "do_cdn_url": config.Env("S3_DO_CDN_URL", "https://{S3_BUCKET}.sfo3.cdn.digitaloceanspaces.com"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
         },

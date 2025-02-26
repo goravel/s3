@@ -32,6 +32,7 @@ type S3 struct {
 	ctx      context.Context
 	config   config.Config
 	disk     string
+	doCdnUrl string
 	instance *s3.Client
 	bucket   string
 	url      string
@@ -48,6 +49,7 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	use_path_style_path := fmt.Sprintf("filesystems.disks.%s.use_path_style", disk)
 	use_path_style := config.Get(use_path_style_path)
 	use_path_style_bool := config.GetBool(use_path_style_path)
+	doCdnUrl := config.GetString(fmt.Sprintf("filesystems.disks.%s.do_cdn_url", disk))
 
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
@@ -73,6 +75,7 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 		ctx:      ctx,
 		config:   config,
 		disk:     disk,
+		doCdnUrl: doCdnUrl,
 		instance: client,
 		bucket:   bucket,
 		url:      url,
@@ -426,5 +429,13 @@ func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
 }
 
 func (r *S3) Url(file string) string {
-	return strings.TrimSuffix(r.url, "/") + "/" + strings.TrimPrefix(file, "/")
+	var u string
+
+	if r.doCdnUrl != "" {
+		u = strings.TrimSuffix(r.doCdnUrl, "/") + "/" + strings.TrimPrefix(file, "/")
+	} else {
+		u = strings.TrimSuffix(r.url, "/") + "/" + strings.TrimPrefix(file, "/")
+	}
+
+	return u
 }
