@@ -353,6 +353,7 @@ func (r *S3) Put(file string, content string) error {
 		Body:          strings.NewReader(content),
 		ContentLength: aws.Int64(int64(len(content))),
 		ContentType:   aws.String(mtype.String()),
+		ACL:           types.ObjectCannedACLPublicRead,
 	})
 
 	return err
