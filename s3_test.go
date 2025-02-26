@@ -32,6 +32,9 @@ func TestStorage(t *testing.T) {
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.bucket").Return(os.Getenv("S3_BUCKET"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.url").Return(os.Getenv("S3_URL"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.token", "").Return("")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.endpoint", "").Return("S3_ENDPOINT")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.use_path_style", "").Return("S3_USE_PATH_STYLE")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.do_cdn_url", "").Return("S3_DO_CDN_URL")
 
 	var driver contractsfilesystem.Driver
 	url := os.Getenv("S3_URL")
