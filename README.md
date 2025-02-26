@@ -6,10 +6,10 @@ A s3 disk driver for `facades.Storage()` of Goravel.
 
 | goravel/s3 | goravel/framework |
 | ---------- | ----------------- |
-| v1.3.\*    | v1.15.\*          |
-| v1.2.\*    | v1.14.\*          |
-| v1.1.\*    | v1.13.\*          |
-| v1.0.\*    | v1.12.\*          |
+| v1.3.*    | v1.15.*          |
+| v1.2.*    | v1.14.*          |
+| v1.1.*    | v1.13.*          |
+| v1.0.*    | v1.12.*          |
 
 ## Install
 
@@ -26,8 +26,8 @@ go get -u github.com/goravel/s3
 import "github.com/goravel/s3"
 
 "providers": []foundation.ServiceProvider{
-...
-&s3.ServiceProvider{},
+    ...
+    &s3.ServiceProvider{},
 }
 ```
 
@@ -63,8 +63,8 @@ DigitalOcean
 ```
 // config/filesystems.go
 import (
-"github.com/goravel/framework/contracts/filesystem"
-s3facades "github.com/goravel/s3/facades"
+    "github.com/goravel/framework/contracts/filesystem"
+    s3facades "github.com/goravel/s3/facades"
 )
 
 "disks": map[string]any{
@@ -91,5 +91,5 @@ s3facades "github.com/goravel/s3/facades"
 Run command below to run test(fill your owner s3 configuration):
 
 ```
-S3_ACCESS_KEY_ID= S3_ACCESS_KEY_SECRET= S3_DEFAULT_REGION= S3_BUCKET= S3_URL= go test ./...
+AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_DEFAULT_REGION= AWS_BUCKET= AWS_URL= go test ./...
 ```
