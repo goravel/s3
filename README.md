@@ -33,13 +33,13 @@ import "github.com/goravel/s3"
 
 3. Add s3 disk to `config/filesystems.go` file
 
-1. AWS Configuration
+AWS Configuration
 
 ```
 // config/filesystems.go
 import (
-"github.com/goravel/framework/contracts/filesystem"
-s3facades "github.com/goravel/s3/facades"
+    "github.com/goravel/framework/contracts/filesystem"
+    s3facades "github.com/goravel/s3/facades"
 )
 
 "disks": map[string]any{
@@ -58,7 +58,7 @@ s3facades "github.com/goravel/s3/facades"
 }
 ```
 
-2. DigitalOcean
+DigitalOcean
 
 ```
 // config/filesystems.go
