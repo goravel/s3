@@ -76,8 +76,8 @@ s3facades "github.com/goravel/s3/facades"
         "region": config.Env("S3_REGION"),
         "bucket": config.Env("S3_BUCKET"),
         "url": config.Env("S3_URL"),
-        "endpoint": config.Env("S3_ENDPOINT". "https://sfo3.digitaloceanspaces.com"),
-        "use_path_style": false,
+        "endpoint": config.Env("S3_ENDPOINT", "https://sfo3.digitaloceanspaces.com"),
+        "use_path_style": config.Env("S3_USE_PATH_STYLE", true),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
         },
