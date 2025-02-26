@@ -44,14 +44,30 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
+	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
+	use_path_style_path := fmt.Sprintf("filesystems.disks.%s.use_path_style", disk)
+	use_path_style := config.Get(use_path_style_path)
+	use_path_style_bool := config.GetBool(use_path_style_path)
+
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
 	}
 
-	client := s3.New(s3.Options{
-		Region:      region,
-		Credentials: aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, token)),
-	})
+	options := s3.Options{
+		Region: region,
+		Credentials: aws.NewCredentialsCache(
+			credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, token)),
+	}
+
+	if endpoint != "" {
+		options.BaseEndpoint = aws.String(endpoint)
+	}
+
+	if use_path_style != nil {
+		options.UsePathStyle = use_path_style_bool
+	}
+
+	client := s3.New(options)
 
 	return &S3{
 		ctx:      ctx,
