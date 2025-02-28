@@ -32,7 +32,7 @@ type S3 struct {
 	ctx      context.Context
 	config   config.Config
 	disk     string
-	doCdnUrl string
+	cdn      string
 	instance *s3.Client
 	bucket   string
 	url      string
@@ -45,11 +45,9 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
-	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
-	use_path_style_path := fmt.Sprintf("filesystems.disks.%s.use_path_style", disk)
-	use_path_style := config.Get(use_path_style_path)
-	use_path_style_bool := config.GetBool(use_path_style_path)
-	doCdnUrl := config.GetString(fmt.Sprintf("filesystems.disks.%s.do_cdn_url", disk))
+	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk), "")
+	use_path_style := config.GetBool(fmt.Sprintf("filesystems.disks.%s.use_path_style", disk), true)
+	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn_url", disk), "")
 
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
@@ -65,8 +63,8 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 		options.BaseEndpoint = aws.String(endpoint)
 	}
 
-	if use_path_style != nil {
-		options.UsePathStyle = use_path_style_bool
+	if !use_path_style {
+		options.UsePathStyle = use_path_style
 	}
 
 	client := s3.New(options)
@@ -75,7 +73,7 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 		ctx:      ctx,
 		config:   config,
 		disk:     disk,
-		doCdnUrl: doCdnUrl,
+		cdn:      cdn,
 		instance: client,
 		bucket:   bucket,
 		url:      url,
@@ -431,8 +429,8 @@ func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
 func (r *S3) Url(file string) string {
 	var u string
 
-	if r.doCdnUrl != "" {
-		u = strings.TrimSuffix(r.doCdnUrl, "/") + "/" + strings.TrimPrefix(file, "/")
+	if r.cdn != "" {
+		u = strings.TrimSuffix(r.cdn, "/") + "/" + strings.TrimPrefix(file, "/")
 	} else {
 		u = strings.TrimSuffix(r.url, "/") + "/" + strings.TrimPrefix(file, "/")
 	}

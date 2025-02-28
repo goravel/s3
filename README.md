@@ -46,10 +46,10 @@ import (
     ...
     "s3": map[string]any{
         "driver": "custom",
-        "key": config.Env("S3_ACCESS_KEY_ID"),
-        "secret": config.Env("S3_ACCESS_KEY_SECRET"),
-        "region": config.Env("S3_REGION"),
-        "bucket": config.Env("S3_BUCKET"),
+        "key": config.Env("AWS_ACCESS_KEY_ID"),
+        "secret": config.Env("AWS_ACCESS_KEY_SECRET"),
+        "region": config.Env("AWS_REGION"),
+        "bucket": config.Env("AWS_BUCKET"),
         "url": config.Env("S3_URL"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
@@ -71,14 +71,14 @@ import (
     ...
     "s3": map[string]any{
         "driver": "custom",
-        "key": config.Env("S3_ACCESS_KEY_ID"),
-        "secret": config.Env("S3_ACCESS_KEY_SECRET"),
-        "region": config.Env("S3_REGION", "us-east-1"),
-        "bucket": config.Env("S3_BUCKET"),
-        "url": config.Env("S3_URL"),
-        "endpoint": config.Env("S3_ENDPOINT"),
-        "use_path_style": config.Env("S3_USE_PATH_STYLE", true),
-        "do_cdn_url": config.Env("S3_DO_CDN_URL"),
+        "key": config.Env("SPACES_ACCESS_KEY_ID"),
+        "secret": config.Env("SPACES_ACCESS_KEY_SECRET"),
+        "region": config.Env("SPACES_REGION", "us-east-1"),
+        "bucket": config.Env("SPACES_BUCKET"),
+        "url": config.Env("SPACES_URL"),
+        "endpoint": config.Env("SPACES_ENDPOINT"),
+        "use_path_style": config.Env("SPACES_USE_PATH_STYLE", true),
+        "do_cdn_url": config.Env("SPACES_CDN_URL"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
         },
