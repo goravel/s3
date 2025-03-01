@@ -32,6 +32,7 @@ type S3 struct {
 	ctx      context.Context
 	config   config.Config
 	disk     string
+	cdn      string
 	instance *s3.Client
 	bucket   string
 	url      string
@@ -44,19 +45,35 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
 	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
+	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk), "")
+	use_path_style := config.GetBool(fmt.Sprintf("filesystems.disks.%s.use_path_style", disk), true)
+	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn", disk), "")
+
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
 	}
 
-	client := s3.New(s3.Options{
-		Region:      region,
-		Credentials: aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, token)),
-	})
+	options := s3.Options{
+		Region: region,
+		Credentials: aws.NewCredentialsCache(
+			credentials.NewStaticCredentialsProvider(accessKeyId, accessKeySecret, token)),
+	}
+
+	if endpoint != "" {
+		options.BaseEndpoint = aws.String(endpoint)
+	}
+
+	if !use_path_style {
+		options.UsePathStyle = use_path_style
+	}
+
+	client := s3.New(options)
 
 	return &S3{
 		ctx:      ctx,
 		config:   config,
 		disk:     disk,
+		cdn:      cdn,
 		instance: client,
 		bucket:   bucket,
 		url:      url,
@@ -337,6 +354,7 @@ func (r *S3) Put(file string, content string) error {
 		Body:          strings.NewReader(content),
 		ContentLength: aws.Int64(int64(len(content))),
 		ContentType:   aws.String(mtype.String()),
+		ACL:           types.ObjectCannedACLPublicRead,
 	})
 
 	return err
@@ -409,5 +427,13 @@ func (r *S3) WithContext(ctx context.Context) filesystem.Driver {
 }
 
 func (r *S3) Url(file string) string {
-	return strings.TrimSuffix(r.url, "/") + "/" + strings.TrimPrefix(file, "/")
+	var u string
+
+	if r.cdn != "" {
+		u = strings.TrimSuffix(r.cdn, "/") + "/" + strings.TrimPrefix(file, "/")
+	} else {
+		u = strings.TrimSuffix(r.url, "/") + "/" + strings.TrimPrefix(file, "/")
+	}
+
+	return u
 }
