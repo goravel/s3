@@ -47,7 +47,7 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
 	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk), "")
 	use_path_style := config.GetBool(fmt.Sprintf("filesystems.disks.%s.use_path_style", disk), true)
-	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn_url", disk), "")
+	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn", disk), "")
 
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
