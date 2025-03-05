@@ -31,7 +31,11 @@ func TestStorage(t *testing.T) {
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
-	mockConfig.EXPECT().GetString("filesystems.disks.s3.token", "").Return("")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.token").Return("")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.endpoint").Return("")
+	mockConfig.EXPECT().GetBool("filesystems.disks.s3.use_path_style", true).Return(false)
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.cdn").Return("")
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.object_canned_acl").Return("")
 
 	var driver contractsfilesystem.Driver
 	url := os.Getenv("AWS_URL")

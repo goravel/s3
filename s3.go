@@ -29,13 +29,14 @@ import (
  */
 
 type S3 struct {
-	ctx      context.Context
-	config   config.Config
-	disk     string
-	cdn      string
-	instance *s3.Client
-	bucket   string
-	url      string
+	bucket          string
+	cdn             string
+	config          config.Config
+	ctx             context.Context
+	disk            string
+	instance        *s3.Client
+	objectCannedACL string
+	url             string
 }
 
 func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) {
@@ -44,10 +45,11 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 	region := config.GetString(fmt.Sprintf("filesystems.disks.%s.region", disk))
 	bucket := config.GetString(fmt.Sprintf("filesystems.disks.%s.bucket", disk))
 	url := config.GetString(fmt.Sprintf("filesystems.disks.%s.url", disk))
-	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk), "")
-	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk), "")
-	use_path_style := config.GetBool(fmt.Sprintf("filesystems.disks.%s.use_path_style", disk), true)
-	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn", disk), "")
+	token := config.GetString(fmt.Sprintf("filesystems.disks.%s.token", disk))
+	endpoint := config.GetString(fmt.Sprintf("filesystems.disks.%s.endpoint", disk))
+	usePathStyle := config.GetBool(fmt.Sprintf("filesystems.disks.%s.use_path_style", disk), true)
+	cdn := config.GetString(fmt.Sprintf("filesystems.disks.%s.cdn", disk))
+	objectCannedACL := config.GetString(fmt.Sprintf("filesystems.disks.%s.object_canned_acl", disk))
 
 	if accessKeyId == "" || accessKeySecret == "" || region == "" || bucket == "" || url == "" {
 		return nil, fmt.Errorf("please set %s configuration first", disk)
@@ -63,20 +65,21 @@ func NewS3(ctx context.Context, config config.Config, disk string) (*S3, error) 
 		options.BaseEndpoint = aws.String(endpoint)
 	}
 
-	if !use_path_style {
-		options.UsePathStyle = use_path_style
+	if !usePathStyle {
+		options.UsePathStyle = usePathStyle
 	}
 
 	client := s3.New(options)
 
 	return &S3{
-		ctx:      ctx,
-		config:   config,
-		disk:     disk,
-		cdn:      cdn,
-		instance: client,
-		bucket:   bucket,
-		url:      url,
+		bucket:          bucket,
+		cdn:             cdn,
+		config:          config,
+		ctx:             ctx,
+		disk:            disk,
+		instance:        client,
+		objectCannedACL: objectCannedACL,
+		url:             url,
 	}, nil
 }
 
@@ -348,14 +351,18 @@ func (r *S3) Put(file string, content string) error {
 	}
 
 	mtype := mimetype.Detect([]byte(content))
-	_, err := r.instance.PutObject(r.ctx, &s3.PutObjectInput{
+	putObjectInput := &s3.PutObjectInput{
 		Bucket:        aws.String(r.bucket),
 		Key:           aws.String(file),
 		Body:          strings.NewReader(content),
 		ContentLength: aws.Int64(int64(len(content))),
 		ContentType:   aws.String(mtype.String()),
-		ACL:           types.ObjectCannedACLPublicRead,
-	})
+	}
+	if r.objectCannedACL != "" {
+		putObjectInput.ACL = types.ObjectCannedACL(r.objectCannedACL)
+	}
+
+	_, err := r.instance.PutObject(r.ctx, putObjectInput)
 
 	return err
 }
