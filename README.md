@@ -79,6 +79,7 @@ import (
         "endpoint": config.Env("SPACES_ENDPOINT"),
         "use_path_style": config.Env("SPACES_USE_PATH_STYLE", true),
         "cdn": config.Env("SPACES_CDN"),
+        "object_canned_acl: config.Env("SPACES_OBJECT_CANNED_ACL"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
         },
