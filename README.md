@@ -52,7 +52,7 @@ import (
         "bucket": config.Env("AWS_BUCKET"),
         "url": config.Env("S3_URL"),
         "via": func() (filesystem.Driver, error) {
-            return s3facades.S3("s3"), nil // The `s3` value is the `disks` key
+            return s3facades.S3("s3") // The `s3` value is the `disks` key
         },
     },
 }
