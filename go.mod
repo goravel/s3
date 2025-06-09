@@ -6,8 +6,8 @@ toolchain go1.24.3
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.36.3
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.67
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.80.0
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.68
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.80.1
 	github.com/gabriel-vasile/mimetype v1.4.9
 	github.com/gookit/color v1.5.4
 	github.com/goravel/framework v1.15.2-0.20250513024952-5c6bf415f2ed
