@@ -50,7 +50,7 @@ import (
         "secret": config.Env("AWS_ACCESS_KEY_SECRET"),
         "region": config.Env("AWS_REGION"),
         "bucket": config.Env("AWS_BUCKET"),
-        "url": config.Env("S3_URL"),
+        "url": config.Env("AWS_URL"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3") // The `s3` value is the `disks` key
         },
@@ -92,5 +92,5 @@ import (
 Run command below to run test(fill your owner s3 configuration):
 
 ```
-AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_DEFAULT_REGION= AWS_BUCKET= AWS_URL= go test ./...
+AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_REGION= AWS_BUCKET= AWS_URL= go test ./...
 ```

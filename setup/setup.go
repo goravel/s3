@@ -15,7 +15,7 @@ var config = `map[string]any{
         "secret": config.Env("AWS_ACCESS_KEY_SECRET"),
         "region": config.Env("AWS_REGION"),
         "bucket": config.Env("AWS_BUCKET"),
-        "url": config.Env("S3_URL"),
+        "url": config.Env("AWS_URL"),
         "via": func() (filesystem.Driver, error) {
             return s3facades.S3("s3") // The ` + "`s3`" + ` value is the ` + "`disks`" + ` key
         },
