@@ -18,7 +18,7 @@ import (
 
 func TestStorage(t *testing.T) {
 	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
-		color.Redln("No filesystem tests run, please add S3 configuration: AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_DEFAULT_REGION= AWS_BUCKET= AWS_URL= go test ./...")
+		color.Redln("No filesystem tests run, please add S3 configuration: AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_REGION= AWS_BUCKET= AWS_URL= go test ./...")
 		return
 	}
 
@@ -28,7 +28,7 @@ func TestStorage(t *testing.T) {
 	mockConfig.EXPECT().GetString("app.timezone").Return("UTC")
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.key").Return(os.Getenv("AWS_ACCESS_KEY_ID"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.secret").Return(os.Getenv("AWS_ACCESS_KEY_SECRET"))
-	mockConfig.EXPECT().GetString("filesystems.disks.s3.region").Return(os.Getenv("AWS_DEFAULT_REGION"))
+	mockConfig.EXPECT().GetString("filesystems.disks.s3.region").Return(os.Getenv("AWS_REGION"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.bucket").Return(os.Getenv("AWS_BUCKET"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.url").Return(os.Getenv("AWS_URL"))
 	mockConfig.EXPECT().GetString("filesystems.disks.s3.token").Return("")
