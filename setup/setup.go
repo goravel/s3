@@ -33,8 +33,8 @@ func main() {
 		).
 		Uninstall(
 			modify.GoFile(path.Config("app.go")).
-				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath())).
-				Find(match.Providers()).Modify(modify.Unregister("&s3.ServiceProvider{}")),
+				Find(match.Providers()).Modify(modify.Unregister("&s3.ServiceProvider{}")).
+				Find(match.Imports()).Modify(modify.RemoveImport(packages.GetModulePath())),
 			modify.GoFile(path.Config("filesystems.go")).
 				Find(match.Config("filesystems.disks")).Modify(modify.RemoveConfig("s3")).
 				Find(match.Imports()).Modify(modify.RemoveImport("github.com/goravel/framework/contracts/filesystem"), modify.RemoveImport("github.com/goravel/s3/facades", "s3facades")),
