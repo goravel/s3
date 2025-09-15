@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gookit/color"
+	"github.com/goravel/framework/support/color"
 	"github.com/stretchr/testify/assert"
 
 	contractsfilesystem "github.com/goravel/framework/contracts/filesystem"
@@ -18,7 +18,7 @@ import (
 
 func TestStorage(t *testing.T) {
 	if os.Getenv("AWS_ACCESS_KEY_ID") == "" {
-		color.Redln("No filesystem tests run, please add S3 configuration: AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_REGION= AWS_BUCKET= AWS_URL= go test ./...")
+		color.Red().Println("No filesystem tests run, please add S3 configuration: AWS_ACCESS_KEY_ID= AWS_ACCESS_KEY_SECRET= AWS_REGION= AWS_BUCKET= AWS_URL= go test ./...")
 		return
 	}
 

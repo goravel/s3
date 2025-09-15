@@ -9,7 +9,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.18.10
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.87.3
 	github.com/gabriel-vasile/mimetype v1.4.10
-	github.com/gookit/color v1.5.4
 	github.com/goravel/framework v1.16.3
 	github.com/stretchr/testify v1.10.0
 )
@@ -34,6 +33,7 @@ require (
 	github.com/dromara/carbon/v2 v2.6.11 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
+	github.com/gookit/color v1.5.4 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmoiron/sqlx v1.4.0 // indirect
