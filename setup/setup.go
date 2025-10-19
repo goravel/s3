@@ -39,7 +39,7 @@ func main() {
 			modify.GoFile(path.Config("filesystems.go")).
 				Find(match.Config("filesystems.disks")).Modify(modify.RemoveConfig("s3")).
 				Find(match.Imports()).Modify(modify.RemoveImport("github.com/goravel/framework/contracts/filesystem"), modify.RemoveImport("github.com/goravel/s3/facades", "s3facades")).
-				Find(match.Config("filesystems")).Modify(modify.AddConfig("default", `""`)),
+				Find(match.Config("filesystems")).Modify(modify.AddConfig("default", `"local"`)),
 		).
 		Execute()
 }
