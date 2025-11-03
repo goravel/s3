@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.18.20
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.89.1
 	github.com/gabriel-vasile/mimetype v1.4.11
-	github.com/goravel/framework v1.16.4
+	github.com/goravel/framework v1.16.5
 	github.com/stretchr/testify v1.11.1
 )
 
