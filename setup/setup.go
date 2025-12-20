@@ -55,13 +55,13 @@ func main() {
 			Find(filesystemsConfig).Modify(modify.AddConfig("default", `"s3"`)),
 	).Uninstall(
 		// Remove s3 disk from filesystems.go
-		modify.GoFile(filesystemsConfigPath).
+		modify.WhenFileExists(filesystemsConfigPath, modify.GoFile(filesystemsConfigPath).
 			Find(filesystemsConfig).Modify(modify.AddConfig("default", `"local"`)).
 			Find(filesystemsDisksConfig).Modify(modify.RemoveConfig("s3")).
 			Find(match.Imports()).Modify(
 			modify.RemoveImport(filesystemContract),
 			modify.RemoveImport(s3Facades, "s3facades"),
-		),
+		)),
 
 		// Remove s3 service provider from app.go if not using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
