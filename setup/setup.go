@@ -44,7 +44,7 @@ func main() {
 		// Add s3 service provider to providers.go if using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
 			return env.IsBootstrapSetup()
-		}, modify.AddProviderApply(moduleImport, s3ServiceProvider)),
+		}, modify.RegisterProvider(moduleImport, s3ServiceProvider)),
 
 		// Add s3 disk to filesystems.go
 		modify.GoFile(filesystemsConfigPath).Find(match.Imports()).Modify(
@@ -73,6 +73,6 @@ func main() {
 		// Remove s3 service provider from providers.go if using bootstrap setup
 		modify.When(func(_ map[string]any) bool {
 			return env.IsBootstrapSetup()
-		}, modify.RemoveProviderApply(moduleImport, s3ServiceProvider)),
+		}, modify.UnregisterProvider(moduleImport, s3ServiceProvider)),
 	).Execute()
 }
