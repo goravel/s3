@@ -7,7 +7,7 @@ toolchain go1.25.6
 require (
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.7
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.95.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.96.0
 	github.com/gabriel-vasile/mimetype v1.4.13
 	github.com/goravel/framework v1.16.1-0.20251216090700-ae61a854735f
 	github.com/stretchr/testify v1.11.1
